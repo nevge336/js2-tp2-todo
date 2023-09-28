@@ -1,6 +1,7 @@
-class Form extends App {
+import App from "../classes/App.js";
+
+export default class Form {
     constructor(el) {
-        super();
         this._el = el;
         this._elInputTask = this._el.task;
         this._elInputDescription = this._el.description;

@@ -1,6 +1,10 @@
-class SortTasks extends App {
+import App from "../classes/App.js";
+
+
+
+
+export default class SortTasks {
     constructor(el) {
-        super();
         this._el = el;
         this._elToDoList = document.querySelector('[data-js-tasks]');
 

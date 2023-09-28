@@ -1,6 +1,8 @@
-class Task extends App {
+import App from "../classes/App.js";
+
+
+export default class Task {
     constructor(el) {
-        super();
         this._el = el;
         this._index = this._el.dataset.jsTask;
         this._elActions = this._el.querySelector('[data-js-actions]');
