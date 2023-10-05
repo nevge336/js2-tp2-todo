@@ -2,14 +2,20 @@ import App from "../classes/App.js";
 
 
 export default class Validator {
-    constructor(){
 
-
-
-        this.init()
-    }
 
     
+/*fonction static on appelle estVide */
+    static estVide(champsFormulaire){
+        let estVide = champsFormulaire == "";
+        return estVide;
+    }
+
+
+
+
+
+
      /**
      * Validation du formulaire
      * @returns

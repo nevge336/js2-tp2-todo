@@ -1,9 +1,20 @@
 import App from "../classes/App.js";
+import Validator from "../classes/Validator.js";
+
+/** 1 - Récupérer les données
+ *  2 - Ask the validator to validate data with a custom event
+ *  3 - Save the data in the database
+ *  4 - display on the list section
+ * 
+  */
+
 
 export default class Form {
     constructor(el) {
         this._el = el;
+
         this._elInputTask = this._el.task;
+
         this._elInputDescription = this._el.description;
         this._elInputImportance = this._el.querySelectorAll('input[name="importance"]');
         this._elBouton = this._el.querySelector('[data-js-btn]'); 
@@ -14,20 +25,25 @@ export default class Form {
     }
 
 
+    /*Pour valider 
+    
+    Validator.estVide ;*/
+
     /**
      * Initialise les comportements
      */
     init() {
-        this._elBouton.addEventListener('click', function(e) {
-            e.preventDefault();
+        console.log('Voici le formulaire');
+        // this._elBouton.addEventListener('click', function(e) {
+        //     e.preventDefault();
 
-            /* Si valide */
-            let estValide = this.validForm();
-            if (estValide) {
-                this.addTask();
-                this._el.reset();
-            }
-        }.bind(this));
+        //     /* Si valide */
+        //     let estValide = this.validForm();
+        //     if (estValide) {
+        //         this.addTask();
+        //         this._el.reset();
+        //     }
+        // }.bind(this));
     }
 
 

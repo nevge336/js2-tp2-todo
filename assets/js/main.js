@@ -1,6 +1,6 @@
 import App from "./classes/App.js";
 
 (function () {
-    //initialiser le Gestionnaire de tâches "App"
+    //initialiser "App"
     const app = new App();
 })();
