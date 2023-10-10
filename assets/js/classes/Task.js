@@ -6,7 +6,7 @@ export default class Task {
     #tache;
     #description;
     #importance;
-    #listeHTML;
+    #tasksList;
     #templateTache;
     #templateDetail;
     #elementHTML;
@@ -17,9 +17,9 @@ export default class Task {
         this.#description = description;
         this.#importance = importance;
 
-        this.#elementHTML;
+        this.#elementHTML = [];  //c'est la valeur sauvegardée de la tache
 
-        this.#listeHTML = App.instance.liste;
+        this.#tasksList = App.instance.tasksList;
         this.#templateTache = document.querySelector("[data-js-task-template]");
         this.#templateDetail = document.querySelector("[data-js-task-detail-template]");
 
@@ -31,20 +31,60 @@ export default class Task {
         this.init();
     }
 
-    injecterUneTacheDansListe(){
+    init() {
+        // this._elActions.addEventListener('click', function (e) {
+        //     if (e.target.dataset.jsAction == 'show') this.showTask();
+        //     else if (e.target.dataset.jsAction == 'delete') this.delete();
+        // }.bind(this));
+    }
+
+
+    /**
+     * 
+     */
+    showTask() {
+
         //cloner le content de #template;
+        const template = document.querySelector("[data-js-task-template]");
+        const contenu = template.content;
+
+        const clone = contenu.cloneNode(true);
+        console.log(clone);
+        // const h1 = clone.querySelector("h1");
+        // h1.textContent = h1.textContent.replaceAll("{{TITRE}}", "Patata");
+        // // clone.querySelector("h1").textContent = `Patate ${i}`
+        // parentB.append(clone);
+
+
+
+
+
         //place le clone dans élémentHTML
         //Modifier le contenu avec replaceAll 
         //Injecter dans la liste
+
+        //Utiliser template + cloneNode pour cloner un élément
+        //
+        // const contenu = template.content;
+
+        // this. {
+        //     const clone = contenu.cloneNode(true);
+        //     const h1 = clone.querySelector("h1");
+        //     h1.textContent = h1.textContent.replaceAll("{{TITRE}}", "Patata");
+        //     // clone.querySelector("h1").textContent = `Patate ${i}`
+        //     parentB.append(clone);
+        // }
     }
 
-    afficherDetail(){
+    afficherDetail() {
         //cloner le contenu de #templateDetail
         //Modifier le contenu avec ReplaceAll
         //Injecter dans la section du Détail
     }
 
-    supprimer(){
+    delete() {
+
+        console.log("Task delete()")
         //supprime de la bd avec FETCH
         //quand c'est supprimé, on supprime #elementHTML (remove())
     }
@@ -55,12 +95,12 @@ export default class Task {
     /**
      * Initialise les comportements
      */
-    init() {
-        this._elActions.addEventListener('click', function(e) {
-            if (e.target.dataset.jsAction == 'show') this.showDetail();
-            else if (e.target.dataset.jsAction == 'delete') this.delete();
-        }.bind(this));
-    }
+    // init() {
+    //     this._elActions.addEventListener('click', function (e) {
+    //         if (e.target.dataset.jsAction == 'show') this.showDetail();
+    //         else if (e.target.dataset.jsAction == 'delete') this.delete();
+    //     }.bind(this));
+    // }
 
 
     /**

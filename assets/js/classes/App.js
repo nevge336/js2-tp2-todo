@@ -1,8 +1,8 @@
-
+import Task from "../classes/Task.js";
 import Form from "../classes/Form.js";
 import Router from "../classes/Router.js";
 import SortTasks from "../classes/SortTasks.js";
-import Task from "../classes/Task.js";
+
 
 
 
@@ -24,7 +24,7 @@ export default class App {
         this.#containerTaskList = document.querySelector("[data-js-tasks]");
 
 
-
+        this.taskList = [];
         this.init();
     }
 
@@ -35,55 +35,50 @@ export default class App {
         } else {
             throw new Error("Erreur de gestionnaire: Impossible de créer plusieurs instances.");
         }
-        this.createTask();
 
+        this.getTaskList();
 
     }
 
-    recupererListeTaches(){
-        //fetch php
-        //on instancie les tâches
-        //pour chaque élément de la base de données = new Tache();
-        // const patate = new Tache();
-        // patate.afficherDetail();
-        
-        //on garde un copie des tâche (liste d'objet tache dans le constructeur)
+    /**
+    * Récupère les sondages depuis le serveur avec une requête HTTP GET (via FETCH)
+    */
+    async getTaskList() {
+        try {
+            const url = "api/tasks/showAll.php";
+            const reponse = await fetch(url);
+            const tasksList = await reponse.json();
+
+            if (tasksList.length > 0) {
+                // let listeElements = "";
+
+                tasksList.forEach((task) => {
+                    this.task = new Task();
+                    this.task.showTask();
+
+                });
+
+
+            } else {
+                this.#containerTaskList.innerHTML = "<p>Aucune tâche trouvée dans la base de données</p>";
+            }
+        } catch (erreur) {
+            console.log('erreur dans getTasksList App');
+            // this.accueil();
+        }
     }
 
-    afficherAcceuil(){
+
+
+    //on garde un copie des tâche (liste d'objet tache dans le constructeur)
+
+    afficherAcceuil() {
         //fetch
     }
 
-    afficherDetailTache(){
+    afficherDetailTache() {
         //fetch
     }
 
-    // /**
-    //  * Construit, injecte et lance les comportements de chaque nouvelle tâche
-    //  * @param {Int} index 
-    //  */
-    createTask() {
-        console.log('coucou App');
 
-        //     let newTaskDom = `
-        //                     <div data-js-task=${index}>
-        //                         <p>
-        //                             <span>
-        //                                 <small>Tâche : </small>${toDoList[index].tache}
-        //                             </span>
-        //                             -
-        //                             <span>
-        //                                 <small>Importance : </small>${toDoList[index].importance}
-        //                             </span>
-        //                             <span data-js-actions>
-        //                                 <button data-js-action="show"l>Afficher le détail</button>
-        //                                 <button data-js-action="delete">Supprimer</button>
-        //                             </span>
-        //                         </p>
-        //                     </div> `;
-
-        //     this._elToDoList.insertAdjacentHTML('beforeend', newTaskDom);
-
-        //     new Task(this._elToDoList.lastElementChild);
-    }
 }
