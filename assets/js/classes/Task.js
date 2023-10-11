@@ -20,9 +20,7 @@ export default class Task {
         this.#description = description;
         this.#importance = importance;
 
-
-
-        this.#tasksList = App.instance.tasksList;
+        // this.#tasksList = App.instance.tasksList;
 
         this.#templateTache = document.querySelector("[data-js-task-template]");
         this.#templateDetail = document.querySelector("[data-js-task-detail-template]");
@@ -67,8 +65,16 @@ export default class Task {
 
 
         this.#elActions.addEventListener('click', function (e) {
-            if (e.target.dataset.jsAction == 'show') this.showDetail();
-            else if (e.target.dataset.jsAction == 'delete') this.delete();
+            let selectedBtn = e.target.dataset.jsAction;
+            if (selectedBtn == 'show') this.#showDetail();
+
+            else if (selectedBtn == 'delete') {
+
+
+  
+                this.#deleteTask(this.#id, this.#el);
+            }
+
         }.bind(this));
 
     }
@@ -79,7 +85,7 @@ export default class Task {
      * Utilise un template pour injecter le contenu 
      * d'une tâche dans le détail de la tâche
      */
-    showDetail() {
+    #showDetail() {
         //cloner le contenu de #templateDetail
         const contenu = this.#templateDetail.content;
         let clone = contenu.cloneNode(true);
@@ -111,45 +117,91 @@ export default class Task {
     /**
      * Efface la tâche de la liste de tâche
      */
-    delete() {
 
-        console.log("DELETE Fonctionne!!!!")
-        //supprime de la bd avec FETCH
-        //quand c'est supprimé, on supprime #elementHTML (remove())
-        this.#el.remove();
+    #deleteTask (id, elementHTML) {
+    
+        const corps = {
+            id: id, 
+        };
+        const config = {
+            method: 'post',
+            headers: {
+                'Content-type' : 'application/json, charset=utf8',
+            },
+            body: JSON.stringify(corps),
+        };
+        fetch("api/tasks/delete.php", config)
+        .then(function(donneesATraiter){
+            return donneesATraiter;
+        })
+        .then(function(donneeFinale){
+            elementHTML.remove();
+    
+        }.bind(this))
+        .catch(function(erreur){
+            console.log(erreur);
+        });
     }
+        
+
+
+    // async #delete() {
+    //     // console.log(this.#id);
+
+    //     const corps = {
+    //         id: this.#id, 
+    //     };
+    //     const config = {
+    //         method: 'post',
+    //         headers: {
+    //             'Content-type' : 'application/json; charset=utf8',
+    //         },
+    //         body: JSON.stringify(corps),
+    //     };
+
+
+    //     // //supprime de la bd avec FETCH
+    //     try {
+    //         const url = "api/tasks/delete.php";
+    //         const response = await fetch(url, config);
+            
+    //         //pour voir les erreurs
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! status: ${response.status}`);
+    //         }
+
+    //         const elDeleted = await response.json();
+    //         console.log(elDeleted);
+    //         this.#el.remove();
+
+    //     } catch (erreur) {
+    //         console.log('erreur dans delete task', erreur);
+
+    //     }
 
 
 
 
-    /**
-     * Initialise les comportements
-     */
-    // init() {
-    //     this._elActions.addEventListener('click', function (e) {
-    //         if (e.target.dataset.jsAction == 'show') this.showDetail();
-    //         else if (e.target.dataset.jsAction == 'delete') this.delete();
-    //     }.bind(this));
+
+                // fetch("api/tasks/delete.php", config)
+        // .then(function(donneesATraiter){
+        //     return donneesATraiter;
+        // })
+        // .then(function(donneeFinale){
+        //     console.log(donneeFinale);
+        //     this.#el.remove();
+    
+        // }.bind(this))
+        // .catch(function(erreur){
+        //     console.log(erreur);
+        // });
+
     // }
 
 
-    /**
-     * Affiche le détail d'une tâche
-     */
-    // showDetail() {
-    //     /* Cas description */
-    //     let description = 'Aucune description disponible.';
-    //     if (toDoList[this._index].description != '') description = toDoList[this._index].description;
 
-    //     let elDetailDom = `
-    //                 <div class="detail__info">
-    //                     <p><small>Tâche : </small>${toDoList[this._index].tache}</p>
-    //                     <p><small>Description : </small>${description}</p>
-    //                     <p><small>Importance : </small>${toDoList[this._index].importance}</p>
-    //                 </div>`;
 
-    //     this._elTaskDetail.innerHTML = elDetailDom;
-    // }
+
 
 
     // /**

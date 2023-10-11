@@ -4,16 +4,13 @@ import Router from "../classes/Router.js";
 import SortTasks from "../classes/SortTasks.js";
 
 
-
-
-
 export default class App {
     // Propriétés privées
     #container;
     #containerForm;
     #containerTaskList;
     // #containerDetail;
-    // #form;
+    #form;
     // #list;
     // #detail;
     // #sortTasks;
@@ -36,6 +33,7 @@ export default class App {
             throw new Error("Erreur de gestionnaire: Impossible de créer plusieurs instances.");
         }
 
+        this.#form = new Form();
         this.getTaskList();
 
     }

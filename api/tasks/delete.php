@@ -6,10 +6,7 @@ ini_set('display_startup_errors', 1);
 try {
     // 1. Se connecter à la base de données
     // Si la connexion est réussie, la variable $connection contiendra l'objet représentant la connexion
-
     // Sinon, une exception sera levée
-
-    // $connexion = new mysqli("localhost", "e9040356", "ypsvFC6RQCCLVc6xvhmq", "e9040356");
     $connexion = new mysqli("localhost", "root", "", "to_do_list");
     if (mysqli_connect_errno()) {
         throw new Exception("Impossible de se connecter à la DB");
@@ -20,7 +17,7 @@ try {
     $id = $data["id"];
 
     // 2. On prépare la requête
-    $requete = "DELETE FROM sondages WHERE id='$id'";
+    $requete = "DELETE FROM to_do_list WHERE id='$id'";
     $stmt = $connexion->prepare($requete);
 
     // 3. On exécute la requête
