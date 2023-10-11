@@ -9,7 +9,10 @@ export default class Task {
     #tasksList;
     #templateTache;
     #templateDetail;
-    #elementHTML;
+    #el;
+    #elActions;
+    #elTaskDetail;
+    #elToDoList;
 
     constructor(id, tache, description, importance) {
         this.#id = id;
@@ -17,76 +20,103 @@ export default class Task {
         this.#description = description;
         this.#importance = importance;
 
-        this.#elementHTML = [];  //c'est la valeur sauvegardée de la tache
+
 
         this.#tasksList = App.instance.tasksList;
+
         this.#templateTache = document.querySelector("[data-js-task-template]");
         this.#templateDetail = document.querySelector("[data-js-task-detail-template]");
+        this.#elTaskDetail = document.querySelector('[data-js-task-detail]');
 
-        // this._el = el;
-        // this._index = this._el.dataset.jsTask;
-        // this._elActions = this._el.querySelector('[data-js-actions]');
-        // this._elToDoList = this._el.closest('[data-js-tasks]');
-        // this._elTaskDetail = document.querySelector('[data-js-task-detail]');
+        this.#el;
+
         this.init();
     }
 
     init() {
-        // this._elActions.addEventListener('click', function (e) {
-        //     if (e.target.dataset.jsAction == 'show') this.showTask();
-        //     else if (e.target.dataset.jsAction == 'delete') this.delete();
-        // }.bind(this));
+
+    }
+
+    /**
+     *  
+     */
+    showTask() {
+
+        //place le clone dans élémentHTML
+        const contenu = this.#templateTache.content;
+        let clone = contenu.cloneNode(true);
+
+        // //Modifier le contenu avec replaceAll 
+        const dataId = clone.querySelector('[data-js-task]');
+        dataId.innerHTML = dataId.innerHTML.replaceAll("{{ID}}", this.#id);
+
+        const dataTache = clone.querySelector("[data-tache]");
+        dataTache.innerHTML = dataTache.innerHTML.replaceAll("{{TACHE}}", this.#tache)
+
+        const dataImportance = clone.querySelector('[data-js-importance]');
+        dataImportance.innerHTML = dataImportance.innerHTML.replaceAll("{{IMPORTANCE}}", this.#importance);
+
+
+        //Injecter dans la liste
+        const parentTaskList = document.querySelector('[data-js-tasks]');
+        parentTaskList.append(clone);
+
+        this.#el = parentTaskList.lastElementChild;
+        this.#elActions = this.#el.querySelector('[data-js-actions]');
+        this.#elToDoList = this.#el.closest('[data-js-tasks]');
+
+
+        this.#elActions.addEventListener('click', function (e) {
+            if (e.target.dataset.jsAction == 'show') this.showDetail();
+            else if (e.target.dataset.jsAction == 'delete') this.delete();
+        }.bind(this));
+
+    }
+
+
+
+    /**
+     * Utilise un template pour injecter le contenu 
+     * d'une tâche dans le détail de la tâche
+     */
+    showDetail() {
+        //cloner le contenu de #templateDetail
+        const contenu = this.#templateDetail.content;
+        let clone = contenu.cloneNode(true);
+
+        //Modifier le contenu avec ReplaceAll
+        const dataId = clone.querySelector('[data-id]');
+        dataId.innerHTML = dataId.innerHTML.replaceAll("{{ID}}", this.#id);
+
+        const dataTache = clone.querySelector("[data-tache]");
+        dataTache.innerHTML = dataTache.innerHTML.replaceAll("{{TACHE}}", this.#tache);
+
+
+        const dataDescription = clone.querySelector('[data-description]');
+        if (this.#description == "") {
+            this.#description = "Aucune description disponible";
+        }
+        dataDescription.innerHTML = dataDescription.innerHTML.replaceAll("{{DESCRIPTION}}", this.#description);
+
+        const dataImportance = clone.querySelector('[data-importance]');
+        dataImportance.innerHTML = dataImportance.innerHTML.replaceAll("{{IMPORTANCE}}", this.#importance);
+
+
+        //Injecter dans la liste
+        this.#elTaskDetail.innerHTML = "";
+        this.#elTaskDetail.append(clone);
     }
 
 
     /**
-     * 
+     * Efface la tâche de la liste de tâche
      */
-    showTask() {
-
-        //cloner le content de #template;
-        const template = document.querySelector("[data-js-task-template]");
-        const contenu = template.content;
-
-        const clone = contenu.cloneNode(true);
-        console.log(clone);
-        // const h1 = clone.querySelector("h1");
-        // h1.textContent = h1.textContent.replaceAll("{{TITRE}}", "Patata");
-        // // clone.querySelector("h1").textContent = `Patate ${i}`
-        // parentB.append(clone);
-
-
-
-
-
-        //place le clone dans élémentHTML
-        //Modifier le contenu avec replaceAll 
-        //Injecter dans la liste
-
-        //Utiliser template + cloneNode pour cloner un élément
-        //
-        // const contenu = template.content;
-
-        // this. {
-        //     const clone = contenu.cloneNode(true);
-        //     const h1 = clone.querySelector("h1");
-        //     h1.textContent = h1.textContent.replaceAll("{{TITRE}}", "Patata");
-        //     // clone.querySelector("h1").textContent = `Patate ${i}`
-        //     parentB.append(clone);
-        // }
-    }
-
-    afficherDetail() {
-        //cloner le contenu de #templateDetail
-        //Modifier le contenu avec ReplaceAll
-        //Injecter dans la section du Détail
-    }
-
     delete() {
 
-        console.log("Task delete()")
+        console.log("DELETE Fonctionne!!!!")
         //supprime de la bd avec FETCH
         //quand c'est supprimé, on supprime #elementHTML (remove())
+        this.#el.remove();
     }
 
 

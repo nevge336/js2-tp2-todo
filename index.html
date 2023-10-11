@@ -53,7 +53,7 @@
                     <div data-js-task="{{ID}}" data-js-importance="{{IMPORTANCE}}">
                         <p>
                             <span>
-                                <small>Tâche : {{TACHE}}</small>
+                                <small data-tache>Tâche : {{TACHE}}</small>
                             </span>
                             -
                             <span> <small>Importance : </small>{{IMPORTANCE}} </span>
@@ -88,9 +88,9 @@
                  <!-- Template d'une tâche -->
                  <template data-js-task-detail-template>
                     <div class="detail__info" data-id="{{ID}}">
-                        <p><small>Tâche : </small>{{TACHE}}</p>
-                        <p><small>Description : </small>{{DESCRIPTION}}</p>
-                        <p><small>Importance : </small>{{IMPORTANCE}}</p>
+                        <p data-tache><small >Tâche : </small>{{TACHE}}</p>
+                        <p data-description><small >Description : </small>{{DESCRIPTION}}</p>
+                        <p data-importance><small >Importance : </small>{{IMPORTANCE}}</p>
                     </div>
                 </template>
 

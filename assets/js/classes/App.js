@@ -53,7 +53,7 @@ export default class App {
                 // let listeElements = "";
 
                 tasksList.forEach((task) => {
-                    this.task = new Task();
+                    this.task = new Task(task.id, task.tache, task.description, task.importance);
                     this.task.showTask();
 
                 });
@@ -63,7 +63,7 @@ export default class App {
                 this.#containerTaskList.innerHTML = "<p>Aucune tâche trouvée dans la base de données</p>";
             }
         } catch (erreur) {
-            console.log('erreur dans getTasksList App');
+            console.log('erreur dans getTasksList App', erreur);
             // this.accueil();
         }
     }
