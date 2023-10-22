@@ -1,16 +1,16 @@
 import App from "../classes/App.js";
-import Task from "../classes/Task.js"
-
+import Task from "../classes/Task.js";
 
 export default class Router {
-    #routes
+    #routes;
+
     constructor() {
         this.app = App.instance;
 
         this.#routes = {
             "/": this.app.getTasksList.bind(this.app),
-            "/:id": this.handleTaskDetail.bind(this)
-        }
+            "/:id": this.app.showDetailById.bind(this.app),
+        };
 
         this.init();
     }
@@ -19,26 +19,22 @@ export default class Router {
         window.addEventListener("popstate", this.manageUrl.bind(this));
         this.manageUrl();
 
-
-    }
-
-    handleTaskDetail(id) {
-        const selectedId = window.location.pathname.slice(1);
-        this.app.showDetailById(selectedId);
-        console.log(selectedId);
+        // Call getTasksList when the Router is initialized
+        this.app.getTasksList();
     }
 
     /**
-     *  Déconstruire l'url et rediriger 
+     *  Déconstruire l'url et rediriger
      */
     manageUrl() {
-        // décortique les éléments de l'url et vérifie s'il y a quelque chose après le slash "/"
         const url = location.hash.slice(1) || "/";
+        const fragments = url.split("/");
 
-        this.#routes[url]();
-
+        if (fragments.length === 2) {
+            const id = fragments[1];
+            this.#routes["/:id"](id);
+        } else {
+            this.#routes["/"]();
+        }
     }
 }
-
-
-

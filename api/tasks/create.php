@@ -11,8 +11,8 @@ $description = $data["description"];
 $importance = $data["importance"];
 
 try {
-    // $connexion = new mysqli("localhost", "e9040356", "ypsvFC6RQCCLVc6xvhmq", "e9040356");
-    $connexion = new mysqli("localhost", "root", "", "to_do_list");
+    $connexion = new mysqli("localhost", "e9040356", "ypsvFC6RQCCLVc6xvhmq", "e9040356");
+    // $connexion = new mysqli("localhost", "root", "", "to_do_list");
     if (mysqli_connect_error()) {
         throw new Exception("Impossible de se connecter à la DB");
     }

@@ -1,7 +1,7 @@
 import Task from "../classes/Task.js";
 import Form from "../classes/Form.js";
 import Router from "../classes/Router.js";
-import SortTasks from "../classes/SortTasks.js";
+import Sort from "../classes/Sort.js";
 
 
 export default class App {
@@ -12,7 +12,6 @@ export default class App {
     #router;
     // #containerDetail;
     #form;
-    #list;
     // #detail;
     // #sortTasks;
     // #validator;
@@ -20,9 +19,8 @@ export default class App {
     constructor() {
         this.#containerForm = document.querySelector("[data-js-form]");
         this.#containerTasksList = document.querySelector("[data-js-tasks]");
-        this.#list = [];
+        this.tasksList = [];
 
-        // this.#tasksList;
         this.init();
     }
 
@@ -34,6 +32,19 @@ export default class App {
             throw new Error("Erreur de gestionnaire: Impossible de créer plusieurs instances.");
         }
 
+        // Add event listeners pour les boutons de tri
+        const sortTaskBtns = document.querySelectorAll("[data-js-sort]");
+        sortTaskBtns.forEach((btn) => {
+            btn.addEventListener("click", (event) => {
+                // console.log(this.tasksList);
+                const sortType = event.target.dataset.jsSort;
+                if (sortType === "tache") {
+                    Sort.byTache(this.tasksList);
+                } else if (sortType === "importance") {
+                    Sort.byImportance(this.tasksList);
+                }
+            });
+        });
         this.#form = new Form();
         this.#router = new Router();
     }
@@ -49,36 +60,37 @@ export default class App {
         try {
             const url = "api/tasks/showAll.php";
             const response = await fetch(url);
-            const tasksList = await response.json();
+            const list = await response.json();
 
-            if (tasksList.length > 0) {
-
-                tasksList.forEach((task) => {
-                    this.task = new Task(task.id, task.tache, task.description, task.importance);
-                    this.task.showTask();
+            if (list.length > 0) {
+                list.forEach((task) => {
+                    const newTask = new Task(
+                        task.id,
+                        task.tache,
+                        task.description,
+                        task.importance
+                    );
+                    newTask.showTask();
+                    this.tasksList.push(newTask);
                 });
-                this.#list.push.tasksList;
             } else {
-                this.#containerTasksList.innerHTML = "<p>Aucune tâche trouvée dans la base de données</p>";
+                this.#containerTasksList.innerHTML =
+                    "<p>Aucune tâche trouvée dans la base de données</p>";
             }
         } catch (erreur) {
-            console.log('erreur dans getTasksList App', erreur);
+            console.log("erreur dans getTasksList App", erreur);
         }
     }
-
 
     showDetailById(id) {
-        console.log('aksldjfhalksdhflkasdjhflkasjdhfalkjsdhflkajsdhf');
-        this.showDetail();
-        // this.#list[idUrl].showDetail();
-
-            // let elementRecherche = this.#list.find(function (form) {
-            //     return form.id == idUrl;
-
-            // })  
-            // if (elementRecherche) {
-            //     // Appeler la méthode showDetail de l'élément trouvé
-            //     elementRecherche.showDetail();
-            // }
+        const task = this.tasksList.find(task => task.id === id);
+        if (task) {
+            //   this.hideTasksList();
+            task.showDetail(id);
         }
     }
+
+
+
+
+}

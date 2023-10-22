@@ -2,9 +2,9 @@ import App from "../classes/App.js";
 
 
 export default class Task {
-    #tache;
-    #description;
-    #importance;
+    // tache;
+    // description;
+    // importance;
     #templateTache;
     #templateDetail;
     #el;
@@ -14,9 +14,9 @@ export default class Task {
 
     constructor(id, tache, description, importance) {
         this.id = id;
-        this.#tache = tache;
-        this.#description = description;
-        this.#importance = importance;
+        this.tache = tache;
+        this.description = description;
+        this.importance = importance;
 
         // this.tasksList = App.instance.tasksList;
 
@@ -49,11 +49,11 @@ export default class Task {
         const dataId = clone.querySelector('[data-js-task]');
         dataId.innerHTML = dataId.innerHTML.replaceAll("{{ID}}", this.id);
 
-        const dataTache = clone.querySelector("[data-tache]");
-        dataTache.innerHTML = dataTache.innerHTML.replaceAll("{{TACHE}}", this.#tache)
+        const dataTache = clone.querySelector("[data-js-name]");
+        dataTache.innerHTML = dataTache.innerHTML.replaceAll("{{TACHE}}", this.tache)
 
         const dataImportance = clone.querySelector('[data-js-importance]');
-        dataImportance.innerHTML = dataImportance.innerHTML.replaceAll("{{IMPORTANCE}}", this.#importance);
+        dataImportance.innerHTML = dataImportance.innerHTML.replaceAll("{{IMPORTANCE}}", this.importance);
 
 
         //Injecter dans la liste
@@ -67,16 +67,13 @@ export default class Task {
         this.#elActions.addEventListener('click', function (e) {
             let selectedBtn = e.target.dataset.jsAction;
             if (selectedBtn == 'show') {
-                //    let id = this.id;
-                //    console.log(id);
-                //ici je veux envoyer l'id dans la barre url
-                
-                const href = this.id;
-                history.pushState(null, '', href);
- 
-                // window.location = href; 
 
-                // this.showDetail();
+                //ici je veux envoyer l'id dans la barre url
+                // const href = `/cours-JS2/travaux/js2-tp2-todo/${this.id}`;
+                const href = this.id;
+
+                history.pushState(null, '', href);
+                this.showDetail(this.id);
             }
             else if (selectedBtn == 'delete') {
                 this.#deleteTask(this.id, this.#el);
@@ -92,8 +89,8 @@ export default class Task {
      * Utilise clone et template pour injecter le contenu 
      * d'une tâche dans le détail de la tâche
      */
+
     showDetail(id) {
-        console.log("afficher les détails ", id);
         //cloner le contenu de #templateDetail
         const contenu = this.#templateDetail.content;
         let clone = contenu.cloneNode(true);
@@ -103,27 +100,38 @@ export default class Task {
         dataId.innerHTML = dataId.innerHTML.replaceAll("{{ID}}", this.id);
 
         const dataTache = clone.querySelector("[data-tache]");
-        dataTache.innerHTML = dataTache.innerHTML.replaceAll("{{TACHE}}", this.#tache);
-
+        dataTache.innerHTML = dataTache.innerHTML.replaceAll("{{TACHE}}", this.tache);
 
         const dataDescription = clone.querySelector('[data-description]');
-        if (this.#description == "") {
-            this.#description = "Aucune description disponible";
+        if (this.description == "") {
+            this.description = "Aucune description disponible";
         }
-        dataDescription.innerHTML = dataDescription.innerHTML.replaceAll("{{DESCRIPTION}}", this.#description);
+        dataDescription.innerHTML = dataDescription.innerHTML.replaceAll("{{DESCRIPTION}}", this.description);
 
         const dataImportance = clone.querySelector('[data-importance]');
-        dataImportance.innerHTML = dataImportance.innerHTML.replaceAll("{{IMPORTANCE}}", this.#importance);
+        dataImportance.innerHTML = dataImportance.innerHTML.replaceAll("{{IMPORTANCE}}", this.importance);
 
 
         //Injecter dans la liste
         this.#elTaskDetail.innerHTML = "";
-        this.#elTaskDetail.append(clone);
-
+        this.#elTaskDetail.append(clone)
 
     }
 
 
+
+    /**
+     * Efface le contenu du détail de la tâche
+    */
+    static clearTask() {
+        const elTask = document.querySelector("[data-tache]");
+        const elDescription = document.querySelector('[data-description]');
+        const elImportance = document.querySelector('[data-importance]');
+
+        elTask.textContent = '';
+        elDescription.textContent = '';
+        elImportance.textContent = '';
+    }
 
     /**
      * paramètre : id (pour la base de données)
@@ -156,9 +164,17 @@ export default class Task {
 
             const elDeleted = await response.json();
             elementHTML.remove();
+            // appelle la méthode static pour effacer le détail
+            Task.clearTask();
+
+            // Enlève l'id de la barre url
+            let href = '/cours-JS2/travaux/js2-tp2-todo/';
+            history.replaceState(null, '', href);
 
         } catch (erreur) {
             console.log('erreur dans delete task', erreur);
         }
     }
+
+
 }

@@ -1,115 +1,110 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script type="module" src="assets/js/main.js"></script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js"
-            integrity="sha512-3GRj7sme01zpWwRNPNy48Rda1bD9cq34lqYG5vb8ZXGc+wRqsoBJ3+AC25IYW5w5SrWlzHqIpNIxZt5QF9sXLg=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        ></script>
-        <link rel="stylesheet" href="assets/css/styles.css">
-        <title>Gestionnaire de tâches</title>
-    </head>
-    <body>
-        <!-- ENTETE -->
-        <header>
-            <h1>TP2</h1>
-            <p>Un gestionnaire de tâches (to-do-list) en POO.</p>
-            <hr />
-        </header>
-        <main>
-            <!-- Section du formulaire -->
-            <section>
-                <h3>Ajouter une tâche</h3>
-                <form data-js-form>
-                    <div>
-                        <label for="task">Nouvelle tâche : </label>
-                        <input type="text" id="task" name="task"  />
-                        <span data-js-error-task></span>
-                    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="assets/js/main.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js"
+      integrity="sha512-3GRj7sme01zpWwRNPNy48Rda1bD9cq34lqYG5vb8ZXGc+wRqsoBJ3+AC25IYW5w5SrWlzHqIpNIxZt5QF9sXLg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <title>Gestionnaire de tâches</title>
+  </head>
+  <body>
+    <!-- ENTETE -->
+    <header>
+      <h1>TP2</h1>
+      <p>Un gestionnaire de tâches (to-do-list) en POO.</p>
+      <hr />
+    </header>
+    <main>
+      <!-- Section du formulaire -->
+      <section>
+        <h3>Ajouter une tâche</h3>
+        <form data-js-form>
+          <div>
+            <label for="task">Nouvelle tâche : </label>
+            <input type="text" id="task" name="task" />
+            <span data-js-error-task></span>
+          </div>
 
-                    <div>
-                        <label for="description">Description : </label>
-                        <input type="text" id="description" name="description" />
-                    </div>
+          <div>
+            <label for="description">Description : </label>
+            <input type="text" id="description" name="description" />
+          </div>
 
-                    <div data-js-imp>
-                        <label for="haute">Haute: </label>
-                        <input type="radio" id="haute" name="importance" value="1" />
-                    
-                        <label for="moyenne">Moyenne: </label>
-                        <input type="radio" id="moyenne" name="importance" value="2" />
-                    
-                        <label  for="basse">Basse: </label>
-                        <input type="radio" id="basse" name="importance" value="3" />
-                        <span data-js-error-imp></span>
-                    </div>
-                    
+          <div data-js-imp>
+            <label for="haute">Haute: </label>
+            <input type="radio" id="haute" name="importance" value="1" />
 
-                    <div>
-                        <button data-js-btn>Ajouter</button>
-                    </div>
-                </form>
-            </section>
+            <label for="moyenne">Moyenne: </label>
+            <input type="radio" id="moyenne" name="importance" value="2" />
 
-            <!-- Section de la liste des tâches -->
-            <section class="to-do-list">
-                <h3>Liste des tâches</h3>
+            <label for="basse">Basse: </label>
+            <input type="radio" id="basse" name="importance" value="3" />
+            <span data-js-error-imp></span>
+          </div>
 
-                 <!-- GABARIT D'UNE TACHE -->
-                 <template data-js-task-template>
-                    <div data-js-task="{{ID}}" data-js-importance="{{IMPORTANCE}}">
-                        <p>
-                            <span>
-                                <small data-tache>Tâche : {{TACHE}}</small>
-                            </span>
-                            -
-                            <span> <small>Importance : </small>{{IMPORTANCE}} </span>
+          <div>
+            <button data-js-btn>Ajouter</button>
+          </div>
+        </form>
+      </section>
 
-                            <!-- BOUTONS D'UNE TÂCHE -->
-                            <span data-js-actions>
-                                <button data-js-action="show">Afficher le détail</button>
-                                <button data-js-action="delete">Supprimer</button>
-                            </span>
-                        </p>
-                    </div>
-                </template>
+      <!-- Section de la liste des tâches -->
+      <section class="to-do-list">
+        <h3>Liste des tâches</h3>
 
-                <!-- Liste des tâches -->
-                <div data-js-tasks>
-                   
-                </div>
+        <!-- GABARIT D'UNE TACHE -->
+        <template data-js-task-template>
+          <div data-js-task="{{ID}}" data-js-importance="{{IMPORTANCE}}">
+            <p>
+              <span>
+                <small data-js-name>Tâche : {{TACHE}}</small>
+              </span>
+              -
+              <span> <small>Importance : </small>{{IMPORTANCE}} </span>
 
-                <!-- SECTION DES FILTRES -->
-                <div class="to-do-list__actions" data-js-sort-tasks>
-                    <button data-js-sort="tache">Trier par ordre alphabétique</button>
-                    <button data-js-sort="importance">Trier par importance</button>
-                </div>
-            </section>
+              <!-- BOUTONS D'UNE TÂCHE -->
+              <span data-js-actions>
+                <button data-js-action="show">Afficher le détail</button>
+                <button data-js-action="delete">Supprimer</button>
+              </span>
+            </p>
+          </div>
+        </template>
 
-            <!-- DÉTAIL D'UNE TÂCHE -->
-            <section class="detail detail--ouvert" data-js-section-DETAIL>
-                <h3>Détail d'une tâche</h3>
+        <!-- Liste des tâches -->
+        <div data-js-tasks></div>
 
-                <div class="chevron chevron--top" data-js-chevron></div>
+        <!-- SECTION DES FILTRES -->
+        <div class="to-do-list__actions" data-js-sort-tasks>
+          <button data-js-sort="tache">Trier par ordre alphabétique</button>
+          <button data-js-sort="importance">Trier par importance</button>
+        </div>
+      </section>
 
-                 <!-- Template d'une tâche -->
-                 <template data-js-task-detail-template>
-                    <div class="detail__info" data-id="{{ID}}">
-                        <p data-tache><small >Tâche : </small>{{TACHE}}</p>
-                        <p data-description><small >Description : </small>{{DESCRIPTION}}</p>
-                        <p data-importance><small >Importance : </small>{{IMPORTANCE}}</p>
-                    </div>
-                </template>
+      <!-- DÉTAIL D'UNE TÂCHE -->
+      <section class="detail detail--ouvert" data-js-section-DETAIL>
+        <h3>Détail d'une tâche</h3>
 
-                <!-- Conteneur du détail de la tâche -->
-                <div class="detail__result" data-js-task-detail>
-                   
-                </div>
-            </section>
-        </main>
-    </body>
+        <div class="chevron chevron--top" data-js-chevron></div>
+
+        <!-- Template d'une tâche -->
+        <template data-js-task-detail-template>
+          <div class="detail__info" data-id="{{ID}}">
+            <p data-tache><small>Tâche : </small>{{TACHE}}</p>
+            <p data-description><small>Description : </small>{{DESCRIPTION}}</p>
+            <p data-importance><small>Importance : </small>{{IMPORTANCE}}</p>
+          </div>
+        </template>
+
+        <!-- Conteneur du détail de la tâche -->
+        <div class="detail__result" data-js-task-detail></div>
+      </section>
+    </main>
+  </body>
 </html>
