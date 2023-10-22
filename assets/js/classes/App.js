@@ -8,20 +8,21 @@ export default class App {
     // Propriétés privées
     #container;
     #containerForm;
-    #containerTaskList;
+    #containerTasksList;
+    #router;
     // #containerDetail;
     #form;
-    // #list;
+    #list;
     // #detail;
     // #sortTasks;
     // #validator;
 
     constructor() {
         this.#containerForm = document.querySelector("[data-js-form]");
-        this.#containerTaskList = document.querySelector("[data-js-tasks]");
+        this.#containerTasksList = document.querySelector("[data-js-tasks]");
+        this.#list = [];
 
-
-        this.taskList = [];
+        // this.#tasksList;
         this.init();
     }
 
@@ -34,49 +35,50 @@ export default class App {
         }
 
         this.#form = new Form();
-        this.getTaskList();
-
+        this.#router = new Router();
     }
 
+
+
     /**
-    * Récupère les sondages depuis le serveur avec une requête HTTP GET (via FETCH)
+    * Récupère les tâches depuis la bd avec une requête HTTP GET (via FETCH)
     */
-    async getTaskList() {
+    async getTasksList() {
+        //vider la liste avant la réinjection
+        this.#containerTasksList.innerHTML = "";
         try {
             const url = "api/tasks/showAll.php";
-            const reponse = await fetch(url);
-            const tasksList = await reponse.json();
+            const response = await fetch(url);
+            const tasksList = await response.json();
 
             if (tasksList.length > 0) {
-                // let listeElements = "";
 
                 tasksList.forEach((task) => {
                     this.task = new Task(task.id, task.tache, task.description, task.importance);
                     this.task.showTask();
-
                 });
-
-
+                this.#list.push.tasksList;
             } else {
-                this.#containerTaskList.innerHTML = "<p>Aucune tâche trouvée dans la base de données</p>";
+                this.#containerTasksList.innerHTML = "<p>Aucune tâche trouvée dans la base de données</p>";
             }
         } catch (erreur) {
             console.log('erreur dans getTasksList App', erreur);
-            // this.accueil();
         }
     }
 
 
+    showDetailById(id) {
+        console.log('aksldjfhalksdhflkasdjhflkasjdhfalkjsdhflkajsdhf');
+        this.showDetail();
+        // this.#list[idUrl].showDetail();
 
-    //on garde un copie des tâche (liste d'objet tache dans le constructeur)
+            // let elementRecherche = this.#list.find(function (form) {
+            //     return form.id == idUrl;
 
-    afficherAcceuil() {
-        //fetch
+            // })  
+            // if (elementRecherche) {
+            //     // Appeler la méthode showDetail de l'élément trouvé
+            //     elementRecherche.showDetail();
+            // }
+        }
     }
-
-    afficherDetailTache() {
-        //fetch
-    }
-
-
-}

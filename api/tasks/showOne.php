@@ -2,6 +2,7 @@
 // afficher les erreurs à l'écran
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
+mysqli_report(MYSQLI_REPORT_ERROR);
 
 try {
     // 1. Se connecter à la base de données
@@ -14,7 +15,7 @@ try {
     }
     $id = $_GET['id'];
     // 2. On prépare la requête
-    $requete = "SELECT * FROM client WHERE id = $id";
+    $requete = "SELECT * FROM taches WHERE id = $id";
 
     $stmt = $connexion->prepare($requete);
 
@@ -44,11 +45,9 @@ try {
         http_response_code(400);
         echo json_encode(["message" => "Impossible de récupérer les données"]);
     }
-
 } catch (Exception $e) {
 
     http_response_code(500);
     echo json_encode(["erreur" => $e->getMessage()]);
     throw new Exception($e->getMessage());
-
 }

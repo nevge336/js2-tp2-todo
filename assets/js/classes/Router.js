@@ -1,30 +1,44 @@
 import App from "../classes/App.js";
+import Task from "../classes/Task.js"
 
 
 export default class Router {
+    #routes
     constructor() {
-        this.routes = {
-            // "/": //fonction du gestionnaire,
-            // "id": //fonction appropriée du gestionnaire 
+        this.app = App.instance;
+
+        this.#routes = {
+            "/": this.app.getTasksList.bind(this.app),
+            "/:id": this.handleTaskDetail.bind(this)
         }
+
+        this.init();
     }
 
     init() {
-        //Écouter au clic
-            // on change l'url avec # et on appelle gérer url
-        // Écouter l'événement popstate, quand ca se déclenche, on appelle gérer l'url
+        window.addEventListener("popstate", this.manageUrl.bind(this));
+        this.manageUrl();
+
+
     }
 
-    gererChangementUrl(){ //on peut faire un switch
-        // on récupère le #
-        //on récupère le id sinon on appelle juste la page d'acceuil
-
-        // si id, le gestionnaire trouve la bonne tâche dans sa liste et appelle la fonction 
-        // afficherDetail (dans la classe Tache)
-
-        // si un id/5 ca affiche le détail de la tâche
-        //fetch, tache 5, affiche
+    handleTaskDetail(id) {
+        const selectedId = window.location.pathname.slice(1);
+        this.app.showDetailById(selectedId);
+        console.log(selectedId);
     }
-    
+
+    /**
+     *  Déconstruire l'url et rediriger 
+     */
+    manageUrl() {
+        // décortique les éléments de l'url et vérifie s'il y a quelque chose après le slash "/"
+        const url = location.hash.slice(1) || "/";
+
+        this.#routes[url]();
+
+    }
 }
+
+
 

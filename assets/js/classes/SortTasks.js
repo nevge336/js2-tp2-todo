@@ -24,7 +24,8 @@ export default class SortTasks {
 
 
     /**
-     * Réordonne le tableau toDoList et appelle la méthode pour injecter les tâches mises à jour
+     * Réordonne le tableau toDoList et appelle la méthode 
+     * pour injecter les tâches mises à jour
      * @param {String} column 
      */
     sort(column) {
